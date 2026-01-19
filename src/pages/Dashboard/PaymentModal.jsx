@@ -8,16 +8,13 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
-import React, { useState } from "react";
+import React from "react";
 
 const PaymentModal = () => {
   const stripe = useStripe();
   const elements = useElements();
-  const [loading, setLoading] = useState(false);
 
   const handlePay = async () => {
-    setLoading(true);
-
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
@@ -31,8 +28,6 @@ const PaymentModal = () => {
     } else {
       console.log("Payment succeeded!");
     }
-
-    setLoading(false);
   };
 
   return (
@@ -65,10 +60,10 @@ const PaymentModal = () => {
             fullWidth
             size="large"
             sx={{ mt: 3, py: 1.3 }}
-            disabled={!stripe || loading}
+            disabled={!stripe}
             onClick={handlePay}
           >
-            {loading ? "Processing..." : "Complete Payment"}
+            Complete Payment
           </Button>
         </Paper>
       </Container>

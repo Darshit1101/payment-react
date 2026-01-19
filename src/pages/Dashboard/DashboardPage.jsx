@@ -7,42 +7,33 @@ import React, { useState } from "react";
 
 const DashboardPage = () => {
   const [clientSecret, setClientSecret] = useState(null);
-  const [loading, setLoading] = useState(false);
 
   const createPaymentIntent = async () => {
-    setLoading(true);
     try {
       const res = await axiosInstance.post("/stripe/create-intent");
       setClientSecret(res.clientSecret);
     } catch (error) {
       console.error("Error creating payment intent:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
   if (!clientSecret) {
     return (
-      <div style={{ maxWidth: 420, margin: "40px auto", textAlign: "center" }}>
+      <div style={{ margin: "20px" }}>
         <h2>Payment Setup</h2>
         <Button
           variant="contained"
           onClick={createPaymentIntent}
-          disabled={loading}
           sx={{ mt: 2 }}
         >
-          {loading ? "Setting up payment..." : "Pay Now"}
+          Pay Now
         </Button>
       </div>
     );
   }
 
-  const options = {
-    clientSecret,
-  };
-
   return (
-    <Elements options={options} stripe={stripePromise}>
+    <Elements options={{ clientSecret }} stripe={stripePromise}>
       <PaymentModal />
     </Elements>
   );
