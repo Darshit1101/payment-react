@@ -14,6 +14,7 @@ const PaymentModal = () => {
   const stripe = useStripe();
   const elements = useElements();
 
+  // Handle payment confirmation
   const handlePay = async () => {
     const result = await stripe.confirmPayment({
       elements,
