@@ -7,11 +7,13 @@ import React, { useState } from "react";
 
 const StripePage = () => {
   const [clientSecret, setClientSecret] = useState(null);
+  const [paymentIntentId, setPaymentIntentId] = useState(null);
 
   const createPaymentIntent = async () => {
     try {
       const res = await axiosInstance.post("/stripe/create-intent");
       setClientSecret(res.clientSecret);
+      setPaymentIntentId(res.paymentIntentId);
     } catch (error) {
       console.error("Error creating payment intent:", error);
     }
@@ -34,7 +36,7 @@ const StripePage = () => {
 
   return (
     <Elements options={{ clientSecret }} stripe={stripePromise}>
-      <PaymentModal />
+      <PaymentModal paymentIntentId={paymentIntentId} />
     </Elements>
   );
 };

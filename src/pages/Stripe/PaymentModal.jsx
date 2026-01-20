@@ -9,10 +9,13 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const PaymentModal = () => {
+const PaymentModal = (props) => {
+  const { paymentIntentId } = props;
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
 
   // Handle payment confirmation
   const handlePay = async () => {
@@ -27,6 +30,9 @@ const PaymentModal = () => {
     if (result.error) {
       console.error(result.error.message);
     } else {
+      navigate("/payment-processing", {
+        state: { paymentIntentId },
+      });
       console.log("Payment succeeded!");
     }
   };
